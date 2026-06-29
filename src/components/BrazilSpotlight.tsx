@@ -7,6 +7,57 @@ import { ArrowRight, ChevronRight, Share2 } from "lucide-react";
 
 interface Props { onSourceClick: (id: string) => void; onEmbedClick: (id: string) => void; }
 
+// SVG FX Infrastructure — substitui imagem quebrada /3d-infra.jpg
+function FXInfraSVG() {
+  return (
+    <svg viewBox="0 0 400 300" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#0a0a0a" />
+          <stop offset="100%" stopColor="#111" />
+        </linearGradient>
+        <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#00FFFF" stopOpacity="0.3" />
+          <stop offset="100%" stopColor="#00FFFF" stopOpacity="0.05" />
+        </linearGradient>
+      </defs>
+      <rect width="400" height="300" fill="url(#bgGrad)" />
+      {/* Grid */}
+      {Array.from({ length: 20 }).map((_, i) => (
+        <line key={`h${i}`} x1="0" y1={i * 15} x2="400" y2={i * 15} stroke="#1a1a1a" strokeWidth="0.5" />
+      ))}
+      {Array.from({ length: 27 }).map((_, i) => (
+        <line key={`v${i}`} x1={i * 15} y1="0" x2={i * 15} y2="300" stroke="#1a1a1a" strokeWidth="0.5" />
+      ))}
+      {/* Central hub — B3 */}
+      <circle cx="200" cy="150" r="30" fill="none" stroke="#00FFFF" strokeWidth="1.5" opacity="0.6" />
+      <circle cx="200" cy="150" r="20" fill="none" stroke="#00FFFF" strokeWidth="1" opacity="0.4" />
+      <text x="200" y="155" textAnchor="middle" fill="#00FFFF" fontSize="10" fontFamily="monospace" fontWeight="bold">B3</text>
+      {/* Nodes */}
+      {[
+        { x: 80, y: 80, label: "CFETS", sub: "China" },
+        { x: 320, y: 80, label: "CIPS", sub: "Yuan" },
+        { x: 80, y: 220, label: "NDB", sub: "BRICS" },
+        { x: 320, y: 220, label: "TCX", sub: "Hedge" },
+        { x: 200, y: 50, label: "PBOC", sub: "Swap" },
+        { x: 200, y: 250, label: "BCB", sub: "Ptax" },
+      ].map((node, i) => (
+        <g key={i}>
+          <line x1="200" y1="150" x2={node.x} y2={node.y} stroke="url(#cyanGrad)" strokeWidth="1" opacity="0.5" />
+          <circle cx={node.x} cy={node.y} r="18" fill="#111" stroke="#00FFFF" strokeWidth="1" opacity="0.7" />
+          <text x={node.x} y={node.y - 2} textAnchor="middle" fill="#e0e0e0" fontSize="8" fontFamily="monospace" fontWeight="bold">{node.label}</text>
+          <text x={node.x} y={node.y + 8} textAnchor="middle" fill="#555" fontSize="6" fontFamily="monospace">{node.sub}</text>
+        </g>
+      ))}
+      {/* Animated pulse ring */}
+      <circle cx="200" cy="150" r="35" fill="none" stroke="#00FFFF" strokeWidth="0.5" opacity="0.3">
+        <animate attributeName="r" values="30;40;30" dur="3s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.3;0.1;0.3" dur="3s" repeatCount="indefinite" />
+      </circle>
+    </svg>
+  );
+}
+
 export default function BrazilSpotlight({ onSourceClick, onEmbedClick }: Props) {
   const chartRef = useRef<HTMLDivElement>(null);
   const locale = getLocale();
@@ -76,7 +127,8 @@ export default function BrazilSpotlight({ onSourceClick, onEmbedClick }: Props) 
           </div>
           <div className="lg:col-span-5 relative">
             <div className="border border-[#1a1a1a] bg-[#0a0a0a] h-full min-h-[400px] relative overflow-hidden group">
-              <img src="/3d-infra.jpg" alt="FX Infrastructure" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700" />
+              {/* SVG substitui imagem quebrada /3d-infra.jpg */}
+              <FXInfraSVG />
               <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent">
                 <span className="text-[9px] font-mono uppercase tracking-[0.2em] text-[#00FFFF]">FOREIGN EXCHANGE INFRASTRUCTURE</span>
                 <div className="text-[10px] font-mono text-[#555] mt-1">B3 / CFETS / CIPS / NDB / TCX</div>
@@ -87,7 +139,7 @@ export default function BrazilSpotlight({ onSourceClick, onEmbedClick }: Props) 
         </div>
         <div className="mt-4 flex items-center justify-between">
           <button onClick={() => onSourceClick("bcb")} className="text-[9px] font-mono text-[#444] hover:text-[#00FFFF] transition-colors">{t("section1.source")}: BCB / PBOC / NDB / CIPS →</button>
-          <a href="#" className="text-[10px] font-mono text-[#00FFFF] hover:underline flex items-center gap-1">{t("section1.readAnalysis")} <ArrowRight size={10} /></a>
+          <a href="https://www.bcb.gov.br/estabilidadefinanceira/trocaisonomada" target="_blank" rel="noopener noreferrer" className="text-[10px] font-mono text-[#00FFFF] hover:underline flex items-center gap-1">{t("section1.readAnalysis")} <ArrowRight size={10} /></a>
         </div>
       </div>
     </section>
