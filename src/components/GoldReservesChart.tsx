@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import { goldReserves, goldShare } from "@/data/goldOilData";
-import { t, getLocale } from "@/i18n";
+import { useI18n } from "@/i18n/I18nContext";
 import ExportButton from "./ExportButton";
 import EstBadge from "./EstBadge";
 import { Share2 } from "lucide-react";
@@ -9,8 +9,8 @@ import { Share2 } from "lucide-react";
 interface Props { onSourceClick: (id: string) => void; onEmbedClick: (id: string) => void; }
 
 export default function GoldReservesChart({ onSourceClick, onEmbedClick }: Props) {
+  const { t, locale } = useI18n();
   const chartRef = useRef<HTMLDivElement>(null);
-  const locale = getLocale();
   const jsonData = { goldReserves, goldShare };
 
   return (

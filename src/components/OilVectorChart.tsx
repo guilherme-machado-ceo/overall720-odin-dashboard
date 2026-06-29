@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Bar, ComposedChart } from "recharts";
 import { oilData } from "@/data/goldOilData";
-import { t } from "@/i18n";
+import { useI18n } from "@/i18n/I18nContext";
 import ExportButton from "./ExportButton";
 import EstBadge from "./EstBadge";
 import { Share2 } from "lucide-react";
@@ -9,6 +9,7 @@ import { Share2 } from "lucide-react";
 interface Props { onSourceClick: (id: string) => void; onEmbedClick: (id: string) => void; }
 
 export default function OilVectorChart({ onSourceClick, onEmbedClick }: Props) {
+  const { t } = useI18n();
   const chartRef = useRef<HTMLDivElement>(null);
   const jsonData = { oil: oilData };
 
