@@ -1,14 +1,7 @@
-import { useEffect, useState } from "react";
-import { getLocale, toggleLocale, t, subscribe } from "@/i18n";
+import { useI18n } from "@/i18n/I18nContext";
 
 export default function Navbar() {
-  const [, forceUpdate] = useState(0);
-  const locale = getLocale();
-
-  useEffect(() => {
-    const unsub = subscribe(() => forceUpdate((v) => v + 1));
-    return () => { unsub(); };
-  }, []);
+  const { locale, setLocale, t } = useI18n();
 
   return (
     <nav className="sticky top-0 z-50 bg-[#050505]/90 backdrop-blur-md border-b border-[#1a1a1a]">
@@ -25,7 +18,12 @@ export default function Navbar() {
               <button key={item.key} className={`px-3 py-1 text-[10px] font-mono transition-colors ${i === 3 ? "bg-[#1a1a1a] text-[#00FFFF] border-b border-[#00FFFF]" : "text-[#555] hover:text-[#aaa]"}`}>{item.label}</button>
             ))}
           </div>
-          <button onClick={toggleLocale} className="px-3 py-1 text-[10px] font-mono border border-[#222] text-[#aaa] hover:text-[#00FFFF] hover:border-[#00FFFF]/40 transition-colors">{locale === "pt" ? "PT" : "EN"}</button>
+          <button 
+            onClick={() => setLocale(locale === "pt" ? "en" : "pt")} 
+            className="px-3 py-1 text-[10px] font-mono border border-[#222] text-[#aaa] hover:text-[#00FFFF] hover:border-[#00FFFF]/40 transition-colors"
+          >
+            {locale === "pt" ? "EN" : "PT"}
+          </button>
           <span className="text-[10px] font-mono text-[#444] hidden md:inline">2026.06</span>
         </div>
       </div>
